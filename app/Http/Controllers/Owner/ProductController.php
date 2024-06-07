@@ -10,7 +10,6 @@ use App\Models\PrimaryCategory;
 use App\Models\Product;
 use App\Models\Shop;
 use App\Models\Stock;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -165,10 +164,10 @@ class ProductController extends Controller
                     $product->is_selling = $request->is_selling;
                     $product->save();
 
-                    if ($request->type === '1') {
+                    if ($request->type === \Constant::PRODUCT_LIST['add']) {
                         $newQuantity = $request->quantity;
                     }
-                    if ($request->type === '2') {
+                    if ($request->type === \Constant::PRODUCT_LIST['reduce']) {
                         $newQuantity = $request->quantity * -1;
                     }
 
