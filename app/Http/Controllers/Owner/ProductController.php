@@ -68,7 +68,7 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        //
+        dd($request);
     }
 
     public function edit($id)
