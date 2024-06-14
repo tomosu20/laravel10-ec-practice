@@ -12,6 +12,7 @@ use App\Http\Controllers\Owner\Auth\VerifyEmailController;
 use App\Http\Controllers\Owner\ImageController;
 use App\Http\Controllers\Owner\ProductController;
 use App\Http\Controllers\Owner\ShopController;
+use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,7 +46,7 @@ Route::resource('products', ProductController::class)
 
 
 Route::get('/dashboard', function () {
-    return view('owner.dashboard');
+    return Inertia::render('Owner/Dashboard');
 })->middleware(['auth:owners'])->name('dashboard');
 
 Route::middleware('guest')->group(function () {
