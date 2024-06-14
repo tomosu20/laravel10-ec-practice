@@ -7,15 +7,18 @@ import TextInput from '@/Components/TextInput.vue';
 import AuthenticatedLayout from '@/Layouts/AdminAuthenticatedLayout.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
+const props = defineProps({ owner: Object });
+
 const form = useForm({
-    name: '',
-    email: '',
+    id: props.owner.id,
+    name: props.owner.name,
+    email: props.owner.email,
     password: '',
     password_confirmation: '',
 })
 
-const storeOwner = () => {
-    form.post(route('admin.owners.store'), {
+const updateOwner = id => {
+    form.put(route('admin.owners.update', { owner: id }), {
         onFinish: () => form.reset('password', 'password_confirmation'),
     });
 }
@@ -28,7 +31,7 @@ const storeOwner = () => {
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Owner新規作成</h2>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Owner編集</h2>
         </template>
 
         <div class="py-12">
@@ -38,13 +41,13 @@ const storeOwner = () => {
                         <section class="text-gray-600 body-font relative">
                             <div class="container px-5 mx-auto">
                                 <div class="flex flex-col text-center w-full mb-12">
-                                    <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">Owner登録
+                                    <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">Owner編集
                                     </h1>
                                 </div>
                                 <div class="lg:w-1/2 md:w-2/3 mx-auto">
                                     <!-- <x-auth-validation-errors class="mb-4" :errors="$errors" /> -->
-                                    <form @submit.prevent="storeOwner">
-                                        <div class="-m-2">
+                                    <form @submit.prevent="updateOwner(form.id)">
+                                        <div class=" -m-2">
                                             <div class="p-2 w-1/2 mx-auto">
                                                 <div class="relative">
                                                     <InputLabel value="Name" />
@@ -59,6 +62,7 @@ const storeOwner = () => {
                                                     <TextInput id="email" type="email" class="mt-1 block w-full"
                                                         v-model="form.email" required autocomplete="username" />
                                                     <InputError class="mt-2" :message="form.errors.email" />
+
                                                 </div>
                                             </div>
                                             <div class="p-2 w-1/2 mx-auto">
@@ -86,7 +90,7 @@ const storeOwner = () => {
                                                 </SecondaryButton>
                                                 </Link>
                                                 <PrimaryButton type="submit">
-                                                    登録する
+                                                    更新する
                                                 </PrimaryButton>
                                             </div>
                                         </div>

@@ -1,6 +1,5 @@
 <script setup>
 import DangerButton from '@/Components/DangerButton.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import AuthenticatedLayout from '@/Layouts/AdminAuthenticatedLayout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
@@ -34,10 +33,9 @@ const deleteOwner = id => {
                                 <div class="lg:w-2/3 w-full mx-auto overflow-auto">
                                     <div class="flex justify-end m-4">
                                         <Link :href="route('admin.owners.create')">
-                                        <PrimaryButton
-                                            class="bg-indigo-500 hover:bg-indigo-600 focus:bg-indigo-700 active:bg-indigo-900 focus:ring-indigo-500">
+                                        <SecondaryButton>
                                             新規登録する
-                                        </PrimaryButton>
+                                        </SecondaryButton>
                                         </Link>
                                     </div>
                                     <table class="table-auto w-full text-left whitespace-no-wrap">
