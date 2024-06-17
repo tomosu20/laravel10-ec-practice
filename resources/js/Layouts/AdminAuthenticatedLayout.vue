@@ -32,7 +32,11 @@ const showingNavigationDropdown = ref(false);
                                 </NavLink>
                                 <NavLink :href="route('admin.owners.index')"
                                     :active="route().current('admin.owners.*')">
-                                    Owner
+                                    Owner管理
+                                </NavLink>
+                                <NavLink :href="route('admin.expired-owners.index')"
+                                    :active="route().current('admin.expired-owners.*')">
+                                    期限切れOwner管理
                                 </NavLink>
                             </div>
                         </div>
@@ -98,7 +102,11 @@ const showingNavigationDropdown = ref(false);
                         </ResponsiveNavLink>
                         <ResponsiveNavLink :href="route('admin.owners.index')"
                             :active="route().current('admin.owners.*')">
-                            Owner
+                            Owner管理
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('admin.expired-owners.index')"
+                            :active="route().current('admin.expired-owners.*')">
+                            期限切れOwner管理
                         </ResponsiveNavLink>
                     </div>
 
