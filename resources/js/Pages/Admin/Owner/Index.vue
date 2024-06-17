@@ -1,11 +1,12 @@
 <script setup>
 import DangerButton from '@/Components/DangerButton.vue';
 import FlashMessage from '@/Components/FlashMessage.vue';
+import Pagination from '@/Components/Pagination.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import AuthenticatedLayout from '@/Layouts/AdminAuthenticatedLayout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 
-defineProps({ owners: Array });
+defineProps({ owners: Object });
 
 const deleteOwner = id => {
     router.delete(route('admin.owners.destroy', { owner: id }), {
@@ -60,7 +61,7 @@ const deleteOwner = id => {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr v-for="owner in owners" :key="owner.id">
+                                            <tr v-for="owner in owners.data" :key="owner.id">
                                                 <td class="md:px-4 py-3">{{ owner.name }}</td>
                                                 <td class="md:px-4 py-3">{{ owner.email }}</td>
                                                 <td class="md:px-4 py-3">{{ owner.created_at }}
@@ -79,7 +80,7 @@ const deleteOwner = id => {
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <!-- {{ owners -> links() }}　 //TODO: ページネーション -->
+                                    <Pagination class="mt-6" :links="owners.links"></Pagination>
                                 </div>
                             </div>
                         </section>

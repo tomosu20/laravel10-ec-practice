@@ -23,7 +23,7 @@ class OwnersController extends Controller
 
     public function index()
     {
-        $owners = Owner::select('id', 'name', 'email', 'created_at')->get();
+        $owners = Owner::select('id', 'name', 'email', 'created_at')->paginate(5);
         return Inertia::render('Admin/Owner/Index', [
             'owners' => $owners,
         ]);
@@ -106,7 +106,7 @@ class OwnersController extends Controller
 
     public function expiredOwnerIndex()
     {
-        $expiredOwners = Owner::onlyTrashed()->get();
+        $expiredOwners = Owner::onlyTrashed()->paginate(5);
         return Inertia::render('Admin/ExpiredOwners', [
             'expiredOwners' => $expiredOwners,
         ]);
