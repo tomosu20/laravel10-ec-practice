@@ -10,7 +10,7 @@ const path = ref('');
 
 if (props.type === 'shops') {
     path.value = '/storage/shops/';
-} else if (props.type === 'product') {
+} else if (props.type === 'products') {
     path.value = '/storage/products/';
 }
 

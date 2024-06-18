@@ -39,7 +39,6 @@ const updateShop = id => {
                         <section class="text-gray-600 body-font relative">
                             <div class="container px-5 mx-auto">
                                 <div class="lg:w-1/2 md:w-2/3 mx-auto">
-                                    <!-- <x-auth-validation-errors class="mb-4" :errors="$errors" /> -->
                                     <form @submit.prevent="updateShop(form.id)">
                                         <div class=" -m-2">
                                             <div class="p-2 w-2/3 mx-auto">
