@@ -20,15 +20,15 @@ const showingNavigationDropdown = ref(false);
                         <div class="flex">
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center">
-                                <Link :href="route('dashboard')">
+                                <Link :href="route('user.items.index')">
                                 <ApplicationLogo class="block h-9 w-auto fill-current text-gray-800" />
                                 </Link>
                             </div>
 
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                                    Dashboard
+                                <NavLink :href="route('user.items.index')" :active="route().current('user.items.*')">
+                                    ホーム
                                 </NavLink>
                             </div>
                         </div>
@@ -55,7 +55,7 @@ const showingNavigationDropdown = ref(false);
 
                                     <template #content>
                                         <!-- <DropdownLink :href="route('profile.edit')"> Profile </DropdownLink> -->
-                                        <DropdownLink :href="route('logout')" method="post" as="button">
+                                        <DropdownLink :href="route('user.logout')" method="post" as="button">
                                             Log Out
                                         </DropdownLink>
                                     </template>
@@ -88,8 +88,8 @@ const showingNavigationDropdown = ref(false);
                 <div :class="{ block: showingNavigationDropdown, hidden: !showingNavigationDropdown }"
                     class="sm:hidden">
                     <div class="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                            Dashboard
+                        <ResponsiveNavLink :href="route('user.items.index')" :active="route().current('user.items.*')">
+                            ホーム
                         </ResponsiveNavLink>
                     </div>
 
@@ -104,7 +104,7 @@ const showingNavigationDropdown = ref(false);
 
                         <div class="mt-3 space-y-1">
                             <!-- <ResponsiveNavLink :href="route('profile.edit')"> Profile </ResponsiveNavLink> -->
-                            <ResponsiveNavLink :href="route('logout')" method="post" as="button">
+                            <ResponsiveNavLink :href="route('user.logout')" method="post" as="button">
                                 Log Out
                             </ResponsiveNavLink>
                         </div>
