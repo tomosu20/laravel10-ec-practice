@@ -102,10 +102,7 @@ class ProductController extends Controller
 
     public function edit($id)
     {
-        $product = Product::with('imageFirst')
-            ->with('imageSecond')
-            ->with('imageThird')
-            ->with('imageFourth')
+        $product = Product::with(['imageFirst', 'imageSecond', 'imageThird', 'imageFourth'])
             ->findOrFail($id);
         $quantity = Stock::where('product_id', $product->id)
             ->sum('quantity');
