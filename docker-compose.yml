@@ -3,6 +3,7 @@ services:
   app:
     ports:
       - "80:80"
+      - 5173:5173
     build: ../docker/app
     container_name: laravel_app
     volumes:

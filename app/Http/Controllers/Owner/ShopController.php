@@ -6,10 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UploadImageRequest;
 use App\Models\Shop;
 use App\Services\ImageService;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
-use InterventionImage;
+use Inertia\Inertia;
 
 class ShopController extends Controller
 {
@@ -18,8 +16,6 @@ class ShopController extends Controller
     {
         $this->middleware('auth:owners');
         $this->middleware(function ($request, $next) {
-            // dd($request->route()->parameter('shop')); //文字列
-            // dd(Auth::id()); //数字
 
             $id = $request->route()->parameter('shop');
             if (!is_null($id)) {
@@ -38,14 +34,13 @@ class ShopController extends Controller
     {
         // $ownerId = Auth::id();
         $shops = Shop::where('owner_id', Auth::id())->get();
-        return view('owner.shops.index', compact('shops'));
+        return Inertia::render('Owner/Shop/Index', ['shops' => $shops]);
     }
 
     public function edit($id)
     {
         $shop = Shop::findOrFail($id);
-        // dd(Shop::findOrFail($id));
-        return view('owner.shops.edit', compact('shop'));
+        return Inertia::render('Owner/Shop/Edit', ['shop' => $shop]);
     }
 
     public function update(UploadImageRequest $request, $id)
@@ -70,8 +65,7 @@ class ShopController extends Controller
         }
         $shop->save();
 
-        return redirect()
-            ->route('owner.shops.index')
+        return to_route('owner.shops.index')
             ->with([
                 'message' => '店舗情報を更新しました。',
                 'status' => 'info',

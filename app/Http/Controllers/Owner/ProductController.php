@@ -13,6 +13,7 @@ use App\Models\Stock;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Inertia\Inertia;
 use Throwable;
 
 class ProductController extends Controller
@@ -35,19 +36,11 @@ class ProductController extends Controller
 
     public function index()
     {
-        // $products = Owner::findOrFail(Auth::id())->shop->product;
         $ownerInfo = Owner::with('shop.product.imageFirst')
             ->where('id', Auth::id())->get();
-
-        // // dd($ownerInfo);
-        // foreach ($ownerInfo as $owner) {
-        //     // dd($owner->shop->product);
-        //     foreach ($owner->shop->product as $product) {
-        //         dd($product->imageFirst->filename);
-        //     }
-        // }
-
-        return view('owner.products.index', compact('ownerInfo'));
+        return Inertia::render('Owner/Product/Index', [
+            'ownerInfo' => $ownerInfo,
+        ]);
     }
 
     public function create()
@@ -64,10 +57,11 @@ class ProductController extends Controller
         $categories = PrimaryCategory::with('secondary')
             ->get();
 
-        return view(
-            'owner.products.create',
-            compact('shops', 'images', 'categories')
-        );
+        return Inertia::render('Owner/Product/Create', [
+            'shops' => $shops,
+            'images' => $images,
+            'categories' => $categories,
+        ]);
     }
 
     public function store(ProductRequest $request)
@@ -99,8 +93,7 @@ class ProductController extends Controller
             throw $e;
         }
 
-        return redirect()
-            ->route('owner.products.index')
+        return to_route('owner.products.index')
             ->with([
                 'message' => '商品登録しました。',
                 'status' => 'info'
@@ -109,7 +102,8 @@ class ProductController extends Controller
 
     public function edit($id)
     {
-        $product = Product::findOrFail($id);
+        $product = Product::with(['imageFirst', 'imageSecond', 'imageThird', 'imageFourth'])
+            ->findOrFail($id);
         $quantity = Stock::where('product_id', $product->id)
             ->sum('quantity');
 
@@ -124,10 +118,14 @@ class ProductController extends Controller
 
         $categories = PrimaryCategory::with('secondary')
             ->get();
-        return view(
-            'owner.products.edit',
-            compact('product', 'quantity', 'shops', 'images', 'categories')
-        );
+
+        return Inertia::render('Owner/Product/Edit', [
+            'product' => $product,
+            'quantity' => $quantity,
+            'shops' => $shops,
+            'images' => $images,
+            'categories' => $categories,
+        ]);
     }
 
     public function update(ProductRequest $request, $id)
@@ -183,8 +181,7 @@ class ProductController extends Controller
             }
         }
 
-        return redirect()
-            ->route('owner.products.index')
+        return to_route('owner.products.index')
             ->with([
                 'message' => '商品情報を更新しました。',
                 'status' => 'info'
@@ -194,8 +191,7 @@ class ProductController extends Controller
     public function destroy($id)
     {
         Product::findOrFail($id)->delete();
-        return redirect()
-            ->route('owner.products.index')
+        return to_route('owner.products.index')
             ->with([
                 'message' => '商品を削除しました。',
                 'status' => 'alert',

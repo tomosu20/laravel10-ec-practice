@@ -3,6 +3,7 @@
 use App\Http\Controllers\User\CartController;
 use App\Http\Controllers\User\ItemController;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('user.welcome');
+    return Inertia::render('User/Welcome');
 });
 
 Route::middleware('auth:users')->group(function () {

@@ -7,9 +7,9 @@ use App\Http\Requests\UploadImageRequest;
 use App\Models\Image;
 use App\Models\Product;
 use App\Services\ImageService;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
 
 class ImageController extends Controller
 {
@@ -34,27 +34,30 @@ class ImageController extends Controller
         $images = Image::where('owner_id', Auth::id())
             ->orderBy('updated_at', 'desc')
             ->paginate(20);
-        return view('owner.images.index', compact('images'));
+        return Inertia::render('Owner/Image/Index', [
+            'images' => $images,
+        ]);
     }
 
     public function create()
     {
-        return view('owner.images.create');
+        return Inertia::render('Owner/Image/Create');
     }
 
     public function store(UploadImageRequest $request)
     {
         $imageFiles = $request->file('files');
         if (!is_null($imageFiles)) {
-            foreach ($imageFiles as $imageFile) {
+            foreach ($imageFiles as $index => $imageFile) {
                 $fileNameToStore = ImageService::upload($imageFile, 'products');
                 Image::create([
                     'owner_id' => Auth::id(),
-                    'filename' => $fileNameToStore
+                    'filename' => $fileNameToStore,
+                    'title' => $request->titles[$index]
                 ]);
             }
         }
-        return redirect()->route('owner.images.index')
+        return to_route('owner.images.index')
             ->with([
                 'message' => '画像登録を実施しました。',
                 'status' => 'info',
@@ -64,7 +67,9 @@ class ImageController extends Controller
     public function edit($id)
     {
         $image = Image::findOrFail($id);
-        return view('owner.images.edit', compact('image'));
+        return Inertia::render('Owner/Image/Edit', [
+            'image' => $image,
+        ]);
     }
 
     public function update(UploadImageRequest $request, $id)
@@ -78,8 +83,7 @@ class ImageController extends Controller
 
         $image->save();
 
-        return redirect()
-            ->route('owner.images.index')
+        return to_route('owner.images.index')
             ->with([
                 'message' => '画像情報を更新しました。',
                 'status' => 'info',
@@ -125,8 +129,7 @@ class ImageController extends Controller
 
         $image->delete();
 
-        return redirect()
-            ->route('owner.images.index')
+        return to_route('owner.images.index')
             ->with([
                 'message' => '画像を削除しました。',
                 'status' => 'alert',

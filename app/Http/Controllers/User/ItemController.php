@@ -7,6 +7,7 @@ use App\Models\PrimaryCategory;
 use App\Models\Product;
 use App\Models\Stock;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class ItemController extends Controller
 {
@@ -27,13 +28,6 @@ class ItemController extends Controller
 
     public function index(Request $request)
     {
-        //同期的に送信
-        // Mail::to('test@example.com')
-        //     ->send(new TestMail());
-
-        //非同期に送信
-        // SendThanksMail::dispatch();
-
         $products = Product::availableItems()
             ->selectCategory($request->category ?? '0')
             ->searchKeyword($request->keyword)
@@ -44,18 +38,28 @@ class ItemController extends Controller
         $categories = PrimaryCategory::with('secondary')
             ->get();
 
-        return view('user.index', compact('products', 'categories'));
+        return Inertia::render('User/Index', [
+            'products' => $products,
+            'categories' => $categories,
+        ]);
     }
 
     public function show($id)
     {
-        $product = Product::findOrFail($id);
+        $product = Product::with([
+            'shop', 'category',
+            'imageFirst', 'imageSecond', 'imageThird', 'imageFourth'
+        ])->findOrFail($id);
         $quantity = Stock::where('product_id', $product->id)
             ->sum('quantity');
 
         if ($quantity > 9) {
             $quantity = 9;
         }
-        return view('user.show', compact('product', 'quantity'));
+
+        return Inertia::render('User/Show', [
+            'product' => $product,
+            'quantity' => $quantity,
+        ]);
     }
 }

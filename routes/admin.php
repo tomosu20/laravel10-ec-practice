@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Admin\Auth\RegisteredUserController;
 use App\Http\Controllers\Admin\Auth\VerifyEmailController;
 use App\Http\Controllers\Admin\OwnersController;
+use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,7 +38,7 @@ Route::prefix('expired-owners')
     });
 
 Route::get('/dashboard', function () {
-    return view('admin.dashboard');
+    return Inertia::render('Admin/Dashboard');
 })->middleware(['auth:admin'])->name('dashboard');
 
 Route::middleware('guest')->group(function () {

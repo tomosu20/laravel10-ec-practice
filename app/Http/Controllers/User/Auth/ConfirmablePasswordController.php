@@ -4,29 +4,27 @@ namespace App\Http\Controllers\User\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class ConfirmablePasswordController extends Controller
 {
     /**
      * Show the confirm password view.
-     *
-     * @return \Illuminate\View\View
      */
-    public function show()
+    public function show(): Response
     {
-        return view('user.auth.confirm-password');
+        return Inertia::render('User/Auth/ConfirmPassword');
     }
 
     /**
      * Confirm the user's password.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return mixed
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (!Auth::guard('users')->validate([
             'email' => $request->user()->email,
