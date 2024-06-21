@@ -30,6 +30,9 @@ const showingNavigationDropdown = ref(false);
                                 <NavLink :href="route('user.items.index')" :active="route().current('user.items.*')">
                                     ホーム
                                 </NavLink>
+                                <NavLink :href="route('user.cart.index')" :active="route().current('user.cart.*')">
+                                    カート
+                                </NavLink>
                             </div>
                         </div>
 
@@ -90,6 +93,9 @@ const showingNavigationDropdown = ref(false);
                     <div class="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink :href="route('user.items.index')" :active="route().current('user.items.*')">
                             ホーム
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('user.cart.index')" :active="route().current('user.cart.*')">
+                            カート
                         </ResponsiveNavLink>
                     </div>
 

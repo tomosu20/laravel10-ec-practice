@@ -11,13 +11,14 @@ use App\Services\CartService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Jobs\SendThanksMail;
-
+use Inertia\Inertia;
 
 class CartController extends Controller
 {
     public function index()
     {
-        $user = User::findOrFail(Auth::id());
+        $user = User::with('products.imageFirst')
+            ->findOrFail(Auth::id());
         $products = $user->products;
         $totalPrice = 0;
 
@@ -25,7 +26,10 @@ class CartController extends Controller
             $totalPrice += $product->price * $product->pivot->quantity;
         }
 
-        return view('user.cart', compact('products', 'totalPrice'));
+        return Inertia::render('User/Cart', [
+            'products' => $products,
+            'totalPrice' => $totalPrice,
+        ]);
     }
 
     public function add(Request $request)
@@ -43,7 +47,7 @@ class CartController extends Controller
                 'quantity' => $request->quantity,
             ]);
         }
-        return redirect()->route('user.cart.index');
+        return to_route('user.cart.index');
     }
 
     public function delete($id)
@@ -51,7 +55,7 @@ class CartController extends Controller
         Cart::where('product_id', $id)
             ->where('user_id', Auth::id())
             ->delete();
-        return redirect()->route('user.cart.index');
+        return to_route('user.cart.index');
     }
 
     public function checkout()
@@ -102,10 +106,10 @@ class CartController extends Controller
 
         $publicKey = env('STRIPE_PUBLIC_KEY');
 
-        return view(
-            'user.checkout',
-            compact('session', 'publicKey')
-        );
+        return Inertia::render('User/Checkout', [
+            'session' => $session,
+            'publicKey' => $publicKey,
+        ]);
     }
 
     public function success()
@@ -123,7 +127,7 @@ class CartController extends Controller
 
         Cart::where('user_id', Auth::id())->delete();
 
-        return redirect()->route('user.items.index');
+        return to_route('user.items.index');
     }
 
     public function cancel()
@@ -138,6 +142,6 @@ class CartController extends Controller
             ]);
         }
 
-        return redirect()->route('user.cart.index');
+        return to_route('user.cart.index');
     }
 }
